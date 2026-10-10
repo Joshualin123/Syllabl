@@ -1,0 +1,13 @@
+# Python
+venv/
+__pycache__/
+*.py[cod]
+
+# Node / React
+node_modules/
+dist/
+
+# Environment variables / secrets
+.env
+.env.*
+!.env.example
