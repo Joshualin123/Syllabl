@@ -1,26 +1,106 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+.home {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #38A3A5;
+  z-index: 1;
+  position: relative;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+.home-mid-container {
+  width: 30vw;
+  height: 50vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  margin-bottom: 10vw;
+  z-index: 2;
+  position: relative;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.home-title {
+  color: black;
+  font-size: clamp(2rem, 8vw, 5rem);
+  align-self: center;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.home-mid-bottom-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.home-start-button {
+  border: 0.1px solid black;
+  border-radius: 20rem;
+  font-size: clamp(1.5rem, 2.5vw,  3rem);
+  padding: 0.2rem 2.5rem;
+  background-color: #C7F9CC;
+}
+
+.home-start-button:hover {
+  background-color: #80ED99;
+}
+
+.home-start-button:active {
+  background-color: #57CC99;
+}
+
+.home-rules-button {
+  font-size: clamp(1rem, 1.5vw, 2rem);
+  margin-top: 0.11rem;
+  text-decoration: underline;
+  color: #C7F9CC;
+}
+
+.home-rules-button:hover {
+  color: #57CC99;
+}
+
+.home-rules-button:active {
+  color: black;
+}
+
+.home-info-pop-up {
+  width: 60%;
+  height: 40%;
+  background-color: #80ED99;
+  color: black;
+  border: 0.1px solid black;
+  position: absolute;
+  border-radius: 20px;
+  padding: clamp(1rem, 2%, 2rem);
+  font-size: clamp(0.8rem, 1vw, 1rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.home-info-pop-up-close {
+  text-decoration: underline;
+  margin-top: auto;
+}
+
+.home-info-pop-up-close:hover {
+  color: #57CC99;
+}
+
+.home-info-pop-up-close:active {
+  color: black;
+}
+
+.front {
+  z-index: 3;
+  visibility: visible;
+}
+
+.behind {
+  z-index: 0;
+  visibility: hidden;
 }
