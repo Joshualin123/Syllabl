@@ -1,17 +1,32 @@
 "use client";
-import Image from "next/image";
 import {useState} from 'react';
+import { Rubik_Spray_Paint } from "next/font/google";
+import { useRouter } from "next/navigation";
+
+const rubikSprayPaint = Rubik_Spray_Paint({
+  subsets: ["latin"],
+  weight: "400",
+});
 
 export default function Home() {
 
   const [showRules, setShowRules] = useState(false);
+  const router = useRouter();
 
   return (
       <main className='home'>
         <div className='home-mid-container'>
-          <h1 className='home-title'>Syllabl</h1>
+          <h1 className={`home-title ${rubikSprayPaint.className}`}>
+            Sy
+            <span className="logo-dot">·</span>
+            lla
+            <span className="logo-dot">·</span>
+            bl
+            <span className="logo-dot">.</span>
+            io
+          </h1>
           <div className='home-mid-bottom-container'>
-            <button className='home-start-button'>Start</button>
+            <button className='home-start-button' onClick={() => router.push("/game")}>Play</button>
             <button className='home-rules-button' 
             onClick={() => setShowRules(true)}>How To Play</button>
           </div>

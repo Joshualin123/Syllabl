@@ -3,10 +3,10 @@
 .home {
   width: 100vw;
   height: 100vh;
-  display: flex;
+  display: flex;  
   justify-content: center;
   align-items: center;
-  background-color: #38A3A5;
+  background-color: #50bbbd;
   z-index: 1;
   position: relative;
 }
@@ -24,9 +24,13 @@
 }
 
 .home-title {
-  color: black;
+  color: rgb(226, 226, 226);
   font-size: clamp(2rem, 8vw, 5rem);
   align-self: center;
+}
+
+.home-title .logo-dot {
+  color: #baf8c0;
 }
 
 .home-mid-bottom-container {
@@ -36,11 +40,16 @@
 }
 
 .home-start-button {
-  border: 0.1px solid black;
+  border: 0.11px solid black;
   border-radius: 20rem;
   font-size: clamp(1.5rem, 2.5vw,  3rem);
   padding: 0.2rem 2.5rem;
   background-color: #C7F9CC;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 .home-start-button:hover {
@@ -71,7 +80,7 @@
   height: 40%;
   background-color: #80ED99;
   color: black;
-  border: 0.1px solid black;
+  border: 0.11px solid black;
   position: absolute;
   border-radius: 20px;
   padding: clamp(1rem, 2%, 2rem);
@@ -88,7 +97,7 @@
 }
 
 .home-info-pop-up-close:hover {
-  color: #57CC99;
+  color: #4aad82;
 }
 
 .home-info-pop-up-close:active {
