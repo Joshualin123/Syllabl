@@ -23,7 +23,11 @@ def check_word(request):
         u_input = data.get("input_word", "").strip()
         print(initial, u_input)
 
+        if (u_input == ""):
+            return JsonResponse({"message": "Word cannot be empty"})
+
         if u_input.lower() not in list(CHECK_DICT.keys()):
+            print("Invalid Word")
             return JsonResponse({"message": "Invalid Word"})
 
         initial_syllables = CHECK_DICT[initial]
@@ -33,6 +37,7 @@ def check_word(request):
 
         #if user word starts with last syllable
         if u_input.startswith(initial_syllables[-1]) == False:
+            print("Syllables don't match")
             return JsonResponse({"message": "Syllables don't match"})
         
         print("Valid")

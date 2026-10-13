@@ -1,11 +1,11 @@
 
-.game {
+.game { 
   width: 100vw;
   height: 100vh;
   display: flex;  
   justify-content: center;
   align-items: center;
-  background-color: #50bbbd;
+  background-color: #67c0c2;
   position: relative;
 }
 
@@ -20,6 +20,11 @@
   position: relative;
 }
 
+.gameErrMsg {
+  font-size: clamp(1.5rem, 2.5vw, 5rem);
+  height: 20%;
+}
+
 .gameOldWordContainer {
   width: 100%;
   height: 30%;
@@ -30,6 +35,7 @@
   justify-content: center;
   align-items: center;
   font-size: clamp(2rem, 3vw, 5rem);
+  margin-top: 3%;
 }
 
 .gameBarTrack {
@@ -54,4 +60,13 @@
   background-color: white;
   padding-left: 1rem;
   text-align: center;
+}
+
+.gameWordResetButton {
+  background-color: rgb(255, 36, 36);
+  height: 10%;
+  width: 15%;
+  border-radius: 10px;
+  margin-top: 1%;
+  color: white;
 }
