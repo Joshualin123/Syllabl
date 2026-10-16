@@ -4,10 +4,14 @@ import {useState, useEffect} from 'react';
 
 export default function Game() {
 
+    //game setting vars
+    const gameTimeConst = 60;
+    const wordTimeConst = 5;
+
     //timer units are in seconds
-    const [time, setTime] = useState(5); //remaining time for curr word
-    const [totalTime, setTotalTime] = useState(5); //total time given per word
-    const [totalGameTime, setTotalGameTime] = useState(5); //total game duration
+    const [time, setTime] = useState(wordTimeConst); //remaining time for curr word
+    const [totalTime, setTotalTime] = useState(wordTimeConst); //total time given per word
+    const [totalGameTime, setTotalGameTime] = useState(gameTimeConst); //total game duration
 
     const [word, setWord] = useState(""); // starting/initial word
     const [inputWord, setInputWord] = useState(""); //users input
@@ -26,7 +30,7 @@ export default function Game() {
         setWord(data.word);
     }
 
-    useEffect(() => { //run on mount
+    useEffect(() => { //run on mount, get initial word
 
         console.log(word)
         getWord(); 
@@ -52,6 +56,8 @@ export default function Game() {
             getWord(); //get new word
             setTime(totalTime); //reset timer
             setErrBool(false); //remove err msg
+            setScore((prev) => prev + data.points);
+            console.log(data.points);
         } else {
             setErrMsg(data.message);
             setErrBool(true);
@@ -107,10 +113,18 @@ export default function Game() {
         return () => clearInterval(gameTimer);
     }, [gameEndBool]);
 
+    function resetGame() { //reset game timer, bool
+        setGameEndBool(false);
+        setTotalGameTime(gameTimeConst);
+    }
+
     return (
         <main className={styles.game}> {/* could create a var for background-color, since this and gameErrMsg must share bg color */}
             
-            <div className={styles.gameEndPopUp} style={{zIndex: gameEndBool ? 10 : -1, visibility: gameEndBool ? "visible" : "hidden"}}></div>
+            <div className={styles.gameEndPopUp} style={{zIndex: gameEndBool ? 10 : -1, visibility: gameEndBool ? "visible" : "hidden"}}>
+                <p className={styles.gameScore}>Score: {score}</p>
+                <button className={styles.gameResetButton} onClick={resetGame}>Play Again</button>
+            </div>
 
             <p className={styles.gameTimer}>{totalGameTime.toFixed(1)}</p>
 

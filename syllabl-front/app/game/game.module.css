@@ -15,7 +15,33 @@
   width: 40%;
   height: 50%;
   background-color: #C7F9CC;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem, 2rem;
+  border-radius: 10px;
+}
 
+.gameScore {
+  color: black;
+  font-size: 2rem;
+  margin-top: 1rem;
+}
+
+.gameResetButton {
+  border-radius: 10px;
+  background-color: #80ED99;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.gameResetButton:hover {
+  background-color: #a5ecb6;
+}
+
+.gameResetButton:active {
+  background-color: #8bc598;
 }
 
 .gameTimer {

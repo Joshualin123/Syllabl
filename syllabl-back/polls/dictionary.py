@@ -14,7 +14,7 @@ with open(start_dict_path, "r", encoding="utf-8") as f:
         syllables = line.strip().lower().split(";")
 
         #dont add words if they end with rare/nonexistent syllables as starting words
-        if all(syllables) and not full_word.endswith(("sion", "nate", "tion", "ise", "ised", "gab", "tive", "ers", "tial")):
+        if all(syllables) and not full_word.endswith(("cious", "sion", "nate", "tion", "ise", "ised", "gab", "tive", "ers", "tial")):
             START_DICT[full_word] = syllables
 
 with open(check_dict_path, "r", encoding="utf-8") as f:

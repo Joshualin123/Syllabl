@@ -4102,7 +4102,6 @@ for;mer;ly
 pro;jec;tor
 sit;u;at;ed
 com;par;a;tive
-std
 herb;al
 lov;ing
 strict;ly
@@ -11510,7 +11509,6 @@ in;def;i;nite;ly
 suck;er
 wild;ly
 sa;ble
-re;tard;ed
 ep;i;the;li;al
 dras;ti;cal;ly
 neat;ly
@@ -15228,6 +15226,10 @@ con;tem;po;rar;ies
 syph;i;lis
 vig;i;lance
 ap;pall;ing
+ap;pall
+ap;palls
+ap;pal;ment
+ap;pal;ling;ness
 pal;my;ra
 fox;es
 tick;ing
@@ -15757,7 +15759,6 @@ pro;filed
 gout
 bit;ter;sweet
 in;hu;man
-fag
 i;so;lat;ing
 my;co;bac;te;ri;um
 ir;ri;tat;ed
@@ -16153,7 +16154,6 @@ hast;y
 dex;ter;i;ty
 re;in;car;na;tion
 ho;lo;gram
-nig;ger
 mac;u;lar
 scrape
 ar;rest;ing
@@ -16754,7 +16754,6 @@ mis;lead
 wrong;do;ing
 ven;tral
 gun;ter
-re;tard
 can;to
 ger;man;ic
 har;assed
@@ -22417,7 +22416,6 @@ re;scis;sion
 sym;pa;thize
 ri;bose
 left;ies
-fag;got
 bloom;er
 kyat
 tan;ta;mount

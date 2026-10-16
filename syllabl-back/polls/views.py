@@ -35,10 +35,15 @@ def check_word(request):
 
         print(initial_syllables, user_syllables)
 
+        points = len(initial_syllables[-1]) #point per letter in syllable
+
+        if initial_syllables[-1].lower().strip() in list(CHECK_DICT.keys()):
+            points = 1
+
         #if user word starts with last syllable
         if u_input.startswith(initial_syllables[-1]) == False:
             print("Syllables don't match, but word valid")
-            return JsonResponse({"message": "Syllables don't match"})
+            return JsonResponse({"message": "-".join(initial_syllables)})
         
-        print("Valid")
-        return JsonResponse({"message": "Valid"})
+        print("Valid, points: ", points)
+        return JsonResponse({"message": "Valid", "points": points})
