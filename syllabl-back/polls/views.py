@@ -19,8 +19,8 @@ def get_word(request):
 def check_word(request):
         #index 0 is initial word, index 2 is users input word
         data = json.loads(request.body)
-        initial = data.get("initial_word", "").strip()
-        u_input = data.get("input_word", "").strip()
+        initial = data.get("initial_word", "").strip().lower()
+        u_input = data.get("input_word", "").strip().lower()
         print(initial, u_input)
 
         if (u_input == ""):
@@ -37,7 +37,7 @@ def check_word(request):
 
         #if user word starts with last syllable
         if u_input.startswith(initial_syllables[-1]) == False:
-            print("Syllables don't match")
+            print("Syllables don't match, but word valid")
             return JsonResponse({"message": "Syllables don't match"})
         
         print("Valid")
