@@ -35,8 +35,9 @@ def check_word(request):
 
         print(initial_syllables, user_syllables)
 
-        points = len(initial_syllables[-1]) #point per letter in syllable
+        points = len(initial_syllables[-1]) + len(user_syllables) #point per letter in syllable used, and point per syllable in users answer
 
+        #if users entire word is just the last syllable, only 1 point
         if initial_syllables[-1].lower().strip() in list(CHECK_DICT.keys()):
             points = 1
 

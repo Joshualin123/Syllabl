@@ -8,6 +8,9 @@ export default function Game() {
     const gameTimeConst = 60;
     const wordTimeConst = 5;
 
+    const [countdown, setCountdown] = useState(3); //countdown before starting game
+    const [showCountdown, setShowCountdown] = useState(true); //toggle countdown popup
+
     //timer units are in seconds
     const [time, setTime] = useState(wordTimeConst); //remaining time for curr word
     const [totalTime, setTotalTime] = useState(wordTimeConst); //total time given per word
@@ -30,12 +33,29 @@ export default function Game() {
         setWord(data.word);
     }
 
-    useEffect(() => { //run on mount, get initial word
-
-        console.log(word)
-        getWord(); 
-
+    //On mount, get initial word, start countdown
+    useEffect(() => {
+        getWord();
     }, []);
+
+    useEffect(() => {
+        if (!showCountdown) {
+            return;
+        }
+
+        const timer = setInterval(() => {
+            setCountdown((prev) => {
+                if (prev <= 1) {
+                    setShowCountdown(false);
+                    return 0;
+                }
+
+                return prev - 1;
+            });
+        }, 1000);
+
+        return () => clearInterval(timer);
+    }, [showCountdown]);
 
     async function checkWord() {
 
@@ -73,22 +93,26 @@ export default function Game() {
             return;
         }
 
-        const timer = setInterval(() => {
-            setTime((prev) => {
+        if (showCountdown == false) {
+            const timer = setInterval(() => {
+                setTime((prev) => {
 
-                if (prev - 0.01 <= 0.01) { //restart if out of time
-                    getWord(); 
-                    setInputWord(""); //clear input box
-                    return totalTime; //restart timer
-                }
+                    if (prev - 0.01 <= 0.01) { //restart if out of time
+                        getWord(); 
+                        setInputWord(""); //clear input box
+                        setErrMsg(""); //clear err msg
+                        return totalTime; //restart timer
+                    }
 
-                return prev - 0.01;
-            });
-            
-        }, 10);
+                    return prev - 0.01;
+                });
+                
+            }, 10);
 
-        return () => clearInterval(timer);
-    }, [gameEndBool]);
+            return () => clearInterval(timer);
+        }
+        
+    }, [gameEndBool, showCountdown]);
 
     //game duration timer
     useEffect(() => {
@@ -97,30 +121,42 @@ export default function Game() {
             return;
         }
 
-        const gameTimer = setInterval(() => {
-            setTotalGameTime((prev) => {
+        if (showCountdown == false) {
+            const gameTimer = setInterval(() => {
+                setTotalGameTime((prev) => {
 
-                if (prev - 0.01 <= 0.01) { //if game time out, make popup to rs game, display score
-                    setGameEndBool(true);
-                    
-                }
+                    if (prev - 0.01 <= 0.01) { //if game time out, make popup to rs game, display score
+                        setGameEndBool(true);
+                        
+                    }
 
-                return prev - 0.01;
-            });
-            
-        }, 10);
+                    return prev - 0.01;
+                });
+                
+            }, 10);
 
-        return () => clearInterval(gameTimer);
-    }, [gameEndBool]);
+            return () => clearInterval(gameTimer);
+        }
+        
+    }, [gameEndBool, showCountdown]);
 
     function resetGame() { //reset game timer, bool
         setGameEndBool(false);
         setTotalGameTime(gameTimeConst);
+        setCountdown(3);
+        setShowCountdown(true);
+        setTime(wordTimeConst);
+        setScore(0);
+        setInputWord("");
+        setErrMsg("");
+        setErrBool(false);
     }
 
     return (
         <main className={styles.game}> {/* could create a var for background-color, since this and gameErrMsg must share bg color */}
             
+            <div className={styles.gameCountdown} style={{zIndex: showCountdown ? 10: -1, visibility: showCountdown ? "visible" : "hidden"}}>{countdown}</div>
+
             <div className={styles.gameEndPopUp} style={{zIndex: gameEndBool ? 10 : -1, visibility: gameEndBool ? "visible" : "hidden"}}>
                 <p className={styles.gameScore}>Score: {score}</p>
                 <button className={styles.gameResetButton} onClick={resetGame}>Play Again</button>
@@ -130,7 +166,7 @@ export default function Game() {
 
             <div className={styles.gameMidContainer}>
 
-                <p className={styles.gameErrMsg} style={{color: errBool ? "#FFFFFF" : "#67c0c2"}}>{errMsg}</p>
+                <p className={styles.gameErrMsg} style={{color: errBool ? "#FFFFFF" : "#242a4366"}}>{errMsg}</p>
 
                 <div className={styles.gameOldWordContainer}>{word}</div>
 

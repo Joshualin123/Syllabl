@@ -1,115 +1,259 @@
 @import "tailwindcss";
 
-.home {
-  width: 100vw;
-  height: 100vh;
-  display: flex;  
-  justify-content: center;
-  align-items: center;
-  background-color: #67c0c2;
-  z-index: 1;
-  position: relative;
+:root {
+  --main-bg-color: #171b2e;
+  --panel-color: #242a43;
+  --accent-color: #a7f3d0;
+  --accent-hover: #c6ffe5;
+  --accent-active: #e1fcf0;
+  --secondary-accent: #f9a8d4;
+  --text-color: #f8fafc;
+  --muted-color: #aab2cc;
+  --surface-color: #ffffff;
+  --border-color: #3c4463;
 }
 
+/* Main home screen */
+
+.home {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background:
+    radial-gradient(
+      ellipse at 50% 35%,
+      #293451 0%,
+      var(--main-bg-color) 70%
+    );
+
+  color: var(--text-color);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Title and main buttons */
+
 .home-mid-container {
-  width: 30vw;
-  height: 50vh;
+  box-sizing: border-box;
+  width: min(85vw, 36rem);
+  min-height: 22rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-around;
-  margin-bottom: 10vw;
+  justify-content: space-between;
+  gap: 2.5rem;
+
+  margin-top: -3rem;
+  padding: 1.5rem;
+
   z-index: 2;
   position: relative;
 }
 
+/* Syllabl logo/title */
+
 .home-title {
-  color: rgb(226, 226, 226);
-  font-size: clamp(2rem, 8vw, 5rem);
-  align-self: center;
+  color: var(--text-color);
+  font-size: clamp(2.5rem, 8vw, 5.5rem);
+  font-weight: 900;
+  letter-spacing: -0.06em;
+  text-align: center;
+  margin: 0;
+
+  text-shadow: 0 6px 30px #00000030;
 }
 
 .home-title .logo-dot {
-  color: #baf8c0;
+  color: var(--accent-color);
 }
+
+/* Bottom button group */
 
 .home-mid-bottom-container {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 0.8rem;
+  width: 100%;
 }
 
+/* Start button */
+
 .home-start-button {
-  border: 0.11px solid black;
-  border-radius: 20rem;
-  font-size: clamp(1.5rem, 2.5vw,  3rem);
-  padding: 0.2rem 2.5rem;
-  background-color: #C7F9CC;
+  box-sizing: border-box;
+  border: 2px solid transparent;
+  border-radius: 999px;
+
+  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+  font-weight: 800;
+  padding: 0.9rem 3rem;
+
+  background-color: var(--accent-color);
+  color: var(--main-bg-color);
+
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
+
+  cursor: pointer;
+  box-shadow: 0 8px 0 #6dbd9e;
+
+  transition:
+    background-color 150ms ease,
+    transform 150ms ease,
+    box-shadow 150ms ease;
 }
 
 .home-start-button:hover {
-  background-color: #80ED99;
+  background-color: var(--accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 0 #6dbd9e;
 }
 
 .home-start-button:active {
-  background-color: #57CC99;
+  background-color: var(--accent-active);
+  transform: translateY(4px);
+  box-shadow: 0 3px 0 #6dbd9e;
 }
 
+/* How to Play button */
+
 .home-rules-button {
-  font-size: clamp(1rem, 1.5vw, 2rem);
-  margin-top: 0.11rem;
-  text-decoration: underline;
-  color: #C7F9CC;
+  border: none;
+  background: transparent;
+
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
+  font-weight: 600;
+  margin-top: 0.25rem;
+  padding: 0.5rem 0.75rem;
+
+  text-decoration: none;
+  color: var(--muted-color);
+
+  cursor: pointer;
+  transition:
+    color 150ms ease,
+    transform 150ms ease;
 }
 
 .home-rules-button:hover {
-  color: #57CC99;
+  color: var(--secondary-accent);
+  transform: translateY(-1px);
 }
 
 .home-rules-button:active {
-  color: black;
+  color: var(--accent-color);
 }
 
+/* How to Play popup */
+
 .home-info-pop-up {
-  width: 60%;
-  height: 40%;
-  background-color: #80ED99;
-  color: black;
-  border: 0.11px solid black;
+  box-sizing: border-box;
+  width: min(88%, 34rem);
+  max-height: 80%;
+  overflow-y: auto;
+
+  background: var(--panel-color);
+  color: var(--text-color);
+
+  border: 1px solid var(--border-color);
+  border-radius: 24px;
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+
+  box-shadow: 0 24px 70px #00000066;
+
   position: absolute;
-  border-radius: 20px;
-  padding: clamp(1rem, 2%, 2rem);
-  font-size: clamp(0.8rem, 1vw, 1rem);
+
+  font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+  line-height: 1.7;
+
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  gap: 1.25rem;
 }
 
+/* Popup close button */
+
 .home-info-pop-up-close {
-  text-decoration: underline;
+  border: none;
+  background: var(--accent-color);
+  color: var(--main-bg-color);
+
+  border-radius: 999px;
+  padding: 0.65rem 1.5rem;
   margin-top: auto;
+
+  font-size: 1rem;
+  font-weight: 800;
+  text-decoration: none;
+
+  cursor: pointer;
+  transition:
+    background-color 150ms ease,
+    transform 150ms ease;
 }
 
 .home-info-pop-up-close:hover {
-  color: #4aad82;
+  background-color: var(--accent-hover);
+  transform: translateY(-1px);
 }
 
 .home-info-pop-up-close:active {
-  color: black;
+  background-color: var(--accent-active);
+  transform: translateY(0);
 }
 
+/* Popup visibility states */
+
 .front {
-  z-index: 3;
+  z-index: 10;
   visibility: visible;
 }
 
 .behind {
-  z-index: 0;
+  z-index: -1;
   visibility: hidden;
+  pointer-events: none;
+}
+
+/* Mobile adjustments */
+
+@media (max-width: 600px) {
+  .home-mid-container {
+    width: 92vw;
+    min-height: 19rem;
+    gap: 2rem;
+    margin-top: -2rem;
+    padding: 1rem;
+  }
+
+  .home-start-button {
+    padding: 0.85rem 2.5rem;
+  }
+
+  .home-info-pop-up {
+    width: 90%;
+    max-height: 85%;
+    border-radius: 20px;
+  }
+}
+
+/* Respect reduced-motion preferences */
+
+@media (prefers-reduced-motion: reduce) {
+  .home-start-button,
+  .home-rules-button,
+  .home-info-pop-up-close {
+    transition: none;
+  }
 }
