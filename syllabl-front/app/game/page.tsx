@@ -2,6 +2,16 @@
 import styles from "./game.module.css";
 import {useState, useEffect} from 'react';
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL?.trim();
+
+function apiUrl(path: string) {
+    if (!API_BASE_URL) {
+        throw new Error("NEXT_PUBLIC_API_URL is not configured for this deployment.");
+    }
+
+    return `${API_BASE_URL.replace(/\/+$/, "")}/${'https://syllabl.onrender.com'.replace(/^\/+/, "")}`;
+}
+
 export default function Game() {
 
     //game setting vars
@@ -29,7 +39,7 @@ export default function Game() {
     const [gameEndBool, setGameEndBool] = useState(false);
 
     async function getWord() {
-        const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "polls/get-word")
+        const response = await fetch(apiUrl("polls/get-word"))
 
         const data = await response.json();
 
@@ -68,7 +78,7 @@ export default function Game() {
 
         console.log("ran checkWord");
 
-        const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "polls/check-word", {
+        const response = await fetch(apiUrl("polls/check-word"), {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
