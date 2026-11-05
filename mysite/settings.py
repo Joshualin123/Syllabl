@@ -29,10 +29,13 @@ SECRET_KEY = 'django-insecure-lql9w9uf16ti29flio4komzl^)1oy7=m_h*35e)xcp+n&5_9#v
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-BACKEND_URL = 'https://syllabl.onrender.com'
+RENDER_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME', 'syllabl.onrender.com')
+FRONTEND_ORIGIN = os.environ.get('FRONTEND_URL', 'https://syllabl-alpha.vercel.app')
 
 ALLOWED_HOSTS = [
-    BACKEND_URL  
+    RENDER_HOSTNAME,
+    'localhost',
+    '127.0.0.1',
 ]
 
 
@@ -40,12 +43,12 @@ ALLOWED_HOSTS = [
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
-    BACKEND_URL
+    FRONTEND_ORIGIN,
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:3000',
-    BACKEND_URL
+    FRONTEND_ORIGIN,
 ]
 
 
