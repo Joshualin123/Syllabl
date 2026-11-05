@@ -123,6 +123,7 @@ export default function Game() {
             //reset end timestamp when timestamp reached
             if (remaining <= 0) {
                 getWord();
+                setErrBool(false); //clear err msg
                 setWordEndTime(Date.now() + wordTimeConst * 1000);
                 console.log("remaining < 0, resetting word timer")
             }
