@@ -35,10 +35,12 @@ ALLOWED_HOSTS = []
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
+    'https://syllabl.onrender.com'
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:3000',
+    'https://syllabl.onrender.com'
 ]
 
 
@@ -84,16 +86,16 @@ TEMPLATES = [
 WSGI_APPLICATION = 'mysite.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/6.1/ref/settings/#databases
+# # Database
+# # https://docs.djangoproject.com/en/6.1/ref/settings/#databases
 
-DATABASES = {
-    'default': dj_database_url.config(
-        # Replace this value with your local database's connection string.
-        default='localhost:/8000/',
-        conn_max_age=600
-    )
-}
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         # Replace this value with your local database's connection string.
+#         default='django.db.backends.sqlite3',
+#         conn_max_age=600
+#     )
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/6.1/ref/settings/#auth-password-validators
