@@ -1,7 +1,7 @@
 from pathlib import Path
 
-start_dict_path = Path(__file__).parent / "all-words-sorted-by-frequency.txt"
-check_dict_path = Path(__file__).parent / "polished-words.txt"
+start_dict_path = Path(__file__).parent / "start_dict.txt"
+check_dict_path = Path(__file__).parent / "check_dict.txt"
 
 START_DICT = {}
 CHECK_DICT = {}
