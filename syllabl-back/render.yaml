@@ -10,7 +10,7 @@ services:
     name: mysite
     runtime: python
     buildCommand: './build.sh'
-    startCommand: 'pwd && ls -la && ls -la mysite' 
+    startCommand: 'python -m gunicorn syllabl-back.asgi:application -k uvicorn.workers.UvicornWorker' 
     envVars:
       - key: DATABASE_URL
         fromDatabase:
