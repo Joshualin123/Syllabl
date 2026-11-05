@@ -3,7 +3,7 @@ import styles from "./game.module.css";
 import {useState, useEffect} from 'react';
 
 
-const backEndUrl = 'https://syllabl.onrender.com';
+const backEndUrl = 'https://syllabl.onrender.com/';
 
 export default function Game() {
 
@@ -32,7 +32,7 @@ export default function Game() {
     const [gameEndBool, setGameEndBool] = useState(false);
 
     async function getWord() {
-        const response = await fetch("https://syllabl.onrender.com" + "polls/get-word")
+        const response = await fetch(backEndUrl + "polls/get-word")
 
         const data = await response.json();
 
@@ -71,7 +71,7 @@ export default function Game() {
 
         console.log("ran checkWord");
 
-        const response = await fetch("https://syllabl.onrender.com" + "polls/check-word", {
+        const response = await fetch(backEndUrl + "polls/check-word", {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
