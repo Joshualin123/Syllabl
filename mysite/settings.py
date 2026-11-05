@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 
 #to allow render deployment
 import dj_database_url 
+import os
 
 from pathlib import Path
 
@@ -29,7 +30,7 @@ SECRET_KEY = 'django-insecure-lql9w9uf16ti29flio4komzl^)1oy7=m_h*35e)xcp+n&5_9#v
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    'syllabl.onrender.com'  
+    'https://syllabl.onrender.com'  
 ]
 
 
