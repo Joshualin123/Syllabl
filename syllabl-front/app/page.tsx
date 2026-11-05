@@ -34,7 +34,7 @@ export default function Home() {
         </div>
         <div className={`home-info-pop-up ${showRules ? "front" : "behind"}`}>
           A random word will be generated. You have a limited amount of time to type a word 
-          which begins with the final syllable of the previous word. No names of any sort are valid, 
+          which begins with the final syllable of the previous word (Ex. Sur-pass &rarr; pass-ing). No names of any sort are valid, 
           this includes things like countries, peoples names, or brands.
 
           <button className='home-info-pop-up-close' onClick={() => setShowRules(false)}>Close</button>

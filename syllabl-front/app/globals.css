@@ -103,14 +103,7 @@
   align-items: center;
   text-align: center;
 
-  cursor: pointer;
-  box-shadow: 0 8px 0 #6dbd9e;
-
-  transition:
-    background-color 150ms ease,
-    transform 150ms ease,
-    box-shadow 150ms ease;
-}
+  }
 
 .home-start-button:hover {
   background-color: var(--accent-hover);

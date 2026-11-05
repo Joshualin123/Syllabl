@@ -7,14 +7,17 @@ export default function Game() {
     //game setting vars
     const gameTimeConst = 60;
     const wordTimeConst = 5;
+    const countdownConst = 3;
 
-    const [countdown, setCountdown] = useState(3); //countdown before starting game
+    const [countdown, setCountdown] = useState(countdownConst); //countdown before starting game
     const [showCountdown, setShowCountdown] = useState(true); //toggle countdown popup
 
     //timer units are in seconds
     const [time, setTime] = useState(wordTimeConst); //remaining time for curr word
+    const [wordEndTime, setWordEndTime] = useState<number | null>(null); //offset from when word is displayed
     const [totalTime, setTotalTime] = useState(wordTimeConst); //total time given per word
     const [totalGameTime, setTotalGameTime] = useState(gameTimeConst); //total game duration
+    const [gameEndTime, setGameEndTime] =  useState<number | null>(null); //live offset from game start
 
     const [word, setWord] = useState(""); // starting/initial word
     const [inputWord, setInputWord] = useState(""); //users input
@@ -39,20 +42,24 @@ export default function Game() {
     }, []);
 
     useEffect(() => {
+
+        const endTime = Date.now() + 3_000;
+
         if (!showCountdown) {
             return;
         }
 
-        const timer = setInterval(() => {
-            setCountdown((prev) => {
-                if (prev <= 1) {
-                    setShowCountdown(false);
-                    return 0;
-                }
+        const timer = setInterval(() => {   
 
-                return prev - 1;
-            });
-        }, 1000);
+            const remaining = Math.round(Math.max(0, Math.ceil(endTime - Date.now()) / 1000) * 10) / 10;
+
+            setCountdown(remaining);
+
+            if (remaining <= 0) {
+                setShowCountdown(false);
+            }
+
+        }, 10);
 
         return () => clearInterval(timer);
     }, [showCountdown]);
@@ -74,7 +81,11 @@ export default function Game() {
         if (data.message == "Valid") {
             setInputWord(""); //clear input box
             getWord(); //get new word
+
             setTime(totalTime); //reset timer
+            setWordEndTime(Date.now() + wordTimeConst * 1000)
+            console.log("valid word, reset time");
+
             setErrBool(false); //remove err msg
             setScore((prev) => prev + data.points);
             console.log(data.points);
@@ -89,56 +100,66 @@ export default function Game() {
     //word timer
     useEffect(() => {
 
-        if (gameEndBool) {
+        if (gameEndBool || showCountdown) {
             return;
         }
 
-        if (showCountdown == false) {
-            const timer = setInterval(() => {
-                setTime((prev) => {
-
-                    if (prev - 0.01 <= 0.01) { //restart if out of time
-                        getWord(); 
-                        setInputWord(""); //clear input box
-                        setErrMsg(""); //clear err msg
-                        return totalTime; //restart timer
-                    }
-
-                    return prev - 0.01;
-                });
-                
-            }, 10);
-
-            return () => clearInterval(timer);
+        if (wordEndTime === null) { //set the end timestamp
+            setWordEndTime(Date.now() + wordTimeConst * 1000)
+            console.log("set word end time")
+            return;
         }
+
+        const timer = setInterval(() => {
+
+            // Calculate difference between curr time stamp and end timestamp from before, convert to seconds, 2 decimal place
+            const remaining = Math.round(Math.max(0, Math.ceil(wordEndTime - Date.now()) / 1000) * 100) / 100;
+
+            setTime(remaining);
+
+            //reset end timestamp when timestamp reached
+            if (remaining <= 0) {
+                getWord();
+                setWordEndTime(Date.now() + wordTimeConst * 1000);
+                console.log("remaining < 0, resetting word timer")
+            }
+            
+        }, 10);
+
+        return () => clearInterval(timer);
         
-    }, [gameEndBool, showCountdown]);
+        
+    }, [gameEndBool, showCountdown, wordEndTime, time]); //vars that trigger this useEffect
 
     //game duration timer
     useEffect(() => {
 
-        if (gameEndBool) {
+        if (gameEndBool || showCountdown) {
             return;
         }
 
-        if (showCountdown == false) {
-            const gameTimer = setInterval(() => {
-                setTotalGameTime((prev) => {
-
-                    if (prev - 0.01 <= 0.01) { //if game time out, make popup to rs game, display score
-                        setGameEndBool(true);
-                        
-                    }
-
-                    return prev - 0.01;
-                });
-                
-            }, 10);
-
-            return () => clearInterval(gameTimer);
+        if (gameEndTime === null) {
+            setGameEndTime(Date.now() + gameTimeConst * 1000)
+            return;
         }
+
+        const timer = setInterval(() => {
+
+            // Update remaining time to 1 decimal place
+            const remaining = Math.round(Math.max(0, Math.ceil(gameEndTime - Date.now()) / 1000) * 100) / 100;
+
+            setTotalGameTime(remaining);
+
+            if (remaining <= 0) {
+                setGameEndBool(true);
+                setGameEndTime(Date.now() + gameTimeConst * 1000);
+            }
+            
+        }, 10);
+
+        return () => clearInterval(timer);
         
-    }, [gameEndBool, showCountdown]);
+    }, [gameEndBool, showCountdown, gameEndTime]);
 
     function resetGame() { //reset game timer, bool
         setGameEndBool(false);
@@ -150,6 +171,7 @@ export default function Game() {
         setInputWord("");
         setErrMsg("");
         setErrBool(false);
+        setGameEndTime(Date.now() + (gameTimeConst + countdownConst) * 1000)
     }
 
     return (
