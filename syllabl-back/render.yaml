@@ -9,8 +9,9 @@ services:
     plan: free
     name: mysite
     runtime: python
+    rootDir: syllabl-back
     buildCommand: './build.sh'
-    startCommand: 'python -m gunicorn syllabl-back.asgi:application -k uvicorn.workers.UvicornWorker' 
+    startCommand: 'python -m gunicorn mysite.asgi:application -k uvicorn.workers.UvicornWorker' 
     envVars:
       - key: DATABASE_URL
         fromDatabase:
