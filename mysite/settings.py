@@ -29,8 +29,10 @@ SECRET_KEY = 'django-insecure-lql9w9uf16ti29flio4komzl^)1oy7=m_h*35e)xcp+n&5_9#v
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
+BACKEND_URL = 'https://syllabl.onrender.com'
+
 ALLOWED_HOSTS = [
-    'https://syllabl.onrender.com'  
+    BACKEND_URL  
 ]
 
 
@@ -38,12 +40,12 @@ ALLOWED_HOSTS = [
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
-    'https://syllabl.onrender.com'
+    BACKEND_URL
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:3000',
-    'https://syllabl.onrender.com'
+    BACKEND_URL
 ]
 
 
