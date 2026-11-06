@@ -27,7 +27,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-lql9w9uf16ti29flio4komzl^)1oy7=m_h*35e)xcp+n&5_9#v'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+#sets debug mode to true if env var is "True", else default is false
+DEBUG = os.environ.get("DEBUG", "False") == "True" 
 
 RENDER_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME', 'syllabl.onrender.com')
 FRONTEND_ORIGIN = os.environ.get('FRONTEND_URL', 'https://syllabl-alpha.vercel.app')
