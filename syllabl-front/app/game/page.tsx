@@ -80,7 +80,9 @@ export default function Game() {
         })
 
         const data = await response.json();
-        
+
+        setInputWord(""); //clear input box
+
         if (data.message == "Valid") {
             setInputWord(""); //clear input box
             getWord(); //get new word
@@ -201,6 +203,7 @@ export default function Game() {
                 </div>
 
                 <input 
+                    autoFocus
                     className={styles.gameNewWordContainer} 
                     placeholder="Enter word here..." 
                     value={inputWord} 
