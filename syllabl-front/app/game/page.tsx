@@ -7,13 +7,25 @@ const backEndUrl = 'https://syllabl.onrender.com/';
 
 export default function Game() {
 
-    //game setting vars
+    //default game setting vars
     const gameTimeConst = 60;
     const wordTimeConst = 5;
     const countdownConst = 3;
+    const [showSettings, setSettings] = useState(true); //state to toggle settings
+    const [highlightLast, toggleHighlight] = useState(false);
+    const [showReset, toggleShowReset] = useState(true);
+
+    const [wordScoreMultiplier, setWordMultiplier] = useState(1);
+    const [gameScoreMultiplier, setGameMultiplier] = useState(1);
+    const [highlightMultiplier, setHighlightMultiplier] = useState(1);
+    const [resetMultiplier, setResetMultiplier] = useState(1);
+
+    const [totalMultiplier, setTotalMultiplier] = useState(1);
 
     const [countdown, setCountdown] = useState(countdownConst); //countdown before starting game
     const [showCountdown, setShowCountdown] = useState(true); //toggle countdown popup
+
+    const [lastSyllable, setLastSyllable] = useState('')
 
     //timer units are in seconds
     const [time, setTime] = useState(wordTimeConst); //remaining time for curr word
@@ -36,36 +48,9 @@ export default function Game() {
 
         const data = await response.json();
 
+        setLastSyllable(data.syllables.at(-1));
         setWord(data.word);
     }
-
-    //On mount, get initial word, start countdown
-    useEffect(() => {
-        getWord();
-    }, []);
-
-    useEffect(() => {
-
-        const endTime = Date.now() + 3_000;
-
-        if (!showCountdown) {
-            return;
-        }
-
-        const timer = setInterval(() => {   
-
-            const remaining = Math.round(Math.max(0, Math.ceil(endTime - Date.now()) / 1000) * 10) / 10;
-
-            setCountdown(remaining);
-
-            if (remaining <= 0) {
-                setShowCountdown(false);
-            }
-
-        }, 10);
-
-        return () => clearInterval(timer);
-    }, [showCountdown]);
 
     async function checkWord() {
 
@@ -88,7 +73,7 @@ export default function Game() {
             getWord(); //get new word
 
             setTime(totalTime); //reset timer
-            setWordEndTime(Date.now() + wordTimeConst * 1000)
+            setWordEndTime(Date.now() + totalTime * 1000)
             console.log("valid word, reset time");
 
             setErrBool(false); //remove err msg
@@ -102,15 +87,53 @@ export default function Game() {
 
     }
 
+    //On mount, get initial word, start countdown
+    useEffect(() => {
+        getWord();
+    }, []);
+
+    useEffect(() => {
+        setTotalMultiplier(Math.round(Math.max(wordScoreMultiplier * gameScoreMultiplier * highlightMultiplier * resetMultiplier) * 100) / 100)
+    }, [wordScoreMultiplier, gameScoreMultiplier, highlightMultiplier, resetMultiplier])
+
+    useEffect(() => {
+
+        const endTime = Date.now() + 3_000;
+
+        if (!showCountdown) {
+            return;
+        }
+
+        if (showSettings) {
+            return;
+        }
+
+        const timer = setInterval(() => {   
+
+            const remaining = Math.round(Math.max(0, Math.ceil(endTime - Date.now()) / 1000) * 10) / 10;
+
+            setCountdown(remaining);
+
+            if (remaining <= 0) {
+                setShowCountdown(false);
+                setGameEndTime(Date.now() + totalGameTime * 1000);
+                setWordEndTime(Date.now() + totalTime * 1000);
+            }
+
+        }, 10);
+
+        return () => clearInterval(timer);
+    }, [showCountdown, showSettings]);
+
     //word timer
     useEffect(() => {
 
-        if (gameEndBool || showCountdown) {
+        if (gameEndBool || showCountdown || showSettings) {
             return;
         }
 
         if (wordEndTime === null) { //set the end timestamp
-            setWordEndTime(Date.now() + wordTimeConst * 1000)
+            setWordEndTime(Date.now() + totalTime * 1000)
             console.log("set word end time")
             return;
         }
@@ -126,8 +149,7 @@ export default function Game() {
             if (remaining <= 0) {
                 getWord();
                 setErrBool(false); //clear err msg
-                setWordEndTime(Date.now() + wordTimeConst * 1000);
-                console.log("remaining < 0, resetting word timer")
+                setWordEndTime(Date.now() + totalTime * 1000);
             }
             
         }, 10);
@@ -140,12 +162,12 @@ export default function Game() {
     //game duration timer
     useEffect(() => {
 
-        if (gameEndBool || showCountdown) {
+        if (gameEndBool || showCountdown || showSettings) {
             return;
         }
 
         if (gameEndTime === null) {
-            setGameEndTime(Date.now() + gameTimeConst * 1000)
+            setGameEndTime(Date.now() + totalGameTime * 1000)
             return;
         }
 
@@ -158,6 +180,7 @@ export default function Game() {
 
             if (remaining <= 0) {
                 setGameEndBool(true);
+                setTotalGameTime(gameTimeConst);
                 setGameEndTime(Date.now() + gameTimeConst * 1000);
             }
             
@@ -165,24 +188,107 @@ export default function Game() {
 
         return () => clearInterval(timer);
         
-    }, [gameEndBool, showCountdown, gameEndTime]);
+    }, [gameEndBool, showCountdown, gameEndTime, showSettings]);
+
+    function startGame() {
+        setSettings(false);
+        setShowCountdown(true);
+        setTotalGameTime(totalGameTime);
+    }
 
     function resetGame() { //reset game timer, bool
         setGameEndBool(false);
-        setTotalGameTime(gameTimeConst);
+        setTotalGameTime(totalGameTime);
         setCountdown(3);
         setShowCountdown(true);
-        setTime(wordTimeConst);
+        setTime(totalTime);
         setScore(0);
         setInputWord("");
         setErrMsg("");
         setErrBool(false);
-        setGameEndTime(Date.now() + (gameTimeConst + countdownConst) * 1000)
+        setGameEndTime(Date.now() + (totalGameTime + countdownConst) * 1000)
+        setSettings(true);
     }
 
     return (
         <main className={styles.game}> {/* could create a var for background-color, since this and gameErrMsg must share bg color */}
             
+            <div className={styles.gameSettings} style={{zIndex: showSettings ? 11 : -1, visibility: showSettings ? "visible" : "hidden"}}>
+                <div className={styles.gameSettingChild}>
+                    Time per word: <span>{totalTime}</span>
+                    <input
+                        type="range"
+                        min={1}
+                        max={10}
+                        value={totalTime}
+                        onChange={(e) => {
+                            setTotalTime(Number(e.target.value));
+                            setTime(Number(e.target.value));
+                            setWordMultiplier(Math.round(Math.max(0, wordTimeConst/Number(e.target.value)) * 100) /100);
+                        }}
+                    />
+                    Score Multiplier: {wordScoreMultiplier}
+                </div>
+                <div className={styles.gameSettingChild}>
+                    Game Duration: <span>{totalGameTime}</span>
+                    <input
+                        type="range"
+                        min={1}
+                        max={180}
+                        value={totalGameTime}
+                        onChange={(e) => {
+                            setTotalGameTime(Number(e.target.value))
+                            setGameMultiplier(Math.round(Math.max(0, gameTimeConst/Number(e.target.value)) * 100) /100)
+                            }
+                        }
+                    />
+                    Score Multiplier: {gameScoreMultiplier}
+                </div>
+                <div className={styles.gameSettingChild}>
+                    Highlight Last Syllable
+                    <input 
+                    type="checkbox" 
+                    checked={highlightLast}
+                    onChange={(e) => {
+                        toggleHighlight(e.target.checked)
+
+                        if (e.target.checked) {
+                            setHighlightMultiplier(0.5);
+                        }
+                        else {
+                            setHighlightMultiplier(1);
+                        }
+                    }}
+                    />
+                    Score Multiplier: {highlightMultiplier}
+                </div>
+                <div className={styles.gameSettingChild}>
+                    Remove Reset Button
+                    <input 
+                        type="checkbox" 
+                        checked={!showReset}
+                        onChange={(e) => 
+                            {
+                                toggleShowReset(!e.target.checked)
+                            
+                                if (e.target.checked) {
+                                    setResetMultiplier(1.1);
+                                }
+                                else {
+                                    setResetMultiplier(1);
+                                }
+                            }
+                        }
+                    />
+                    Score Multiplier: {resetMultiplier}
+                </div>
+
+                <div className={styles.gameCloseSettings}>
+                    Total Score Multiplier: {totalMultiplier}
+                    <button className={styles.gameResetButton} onClick={startGame}>Start</button>
+                </div>
+            </div>
+
             <div className={styles.gameCountdown} style={{zIndex: showCountdown ? 10: -1, visibility: showCountdown ? "visible" : "hidden"}}>{countdown}</div>
 
             <div className={styles.gameEndPopUp} style={{zIndex: gameEndBool ? 10 : -1, visibility: gameEndBool ? "visible" : "hidden"}}>
@@ -196,7 +302,18 @@ export default function Game() {
 
                 <p className={styles.gameErrMsg} style={{color: errBool ? "#FFFFFF" : "#242a4366"}}>{errMsg}</p>
 
-                <div className={styles.gameOldWordContainer}>{word}</div>
+                <div className={styles.gameOldWordContainer}>
+                    {highlightLast ? (
+                        <>
+                            {word.slice(0, word.length - lastSyllable.length)}
+                            <span className={styles.highlightedSyllable}>
+                                {lastSyllable}
+                            </span>
+                        </>
+                    ) : (
+                        word
+                    )}
+                </div>
 
                 <div className={styles.gameBarTrack}>
                     <div className={styles.gameBar} style={{width: `${(time / totalTime) * 100}%`}}></div>
@@ -216,7 +333,7 @@ export default function Game() {
                 >
                 </input>
                 
-                <button className={styles.gameWordResetButton} onClick={() => {getWord()}}>Reset Word</button>
+                <button className={styles.gameWordResetButton} style={{zIndex: showReset ? 10: -1, visibility: showReset ? "visible" : "hidden"}} onClick={() => {getWord()}}>Reset Word</button>
             </div>
         </main>
     );
